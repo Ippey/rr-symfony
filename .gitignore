@@ -1,3 +1,7 @@
+# Because public project
+/composer.lock
+/symfony.lock
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
