@@ -2,12 +2,14 @@
 
 namespace App\Command;
 
-use Spiral\RoadRunner\Http\HttpWorker;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Spiral\RoadRunner\Http\PSR7Worker;
 use Spiral\RoadRunner\Worker;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Throwable;
 
@@ -39,15 +41,21 @@ class WorkerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $rrWorker = Worker::create();
-        $worker = new HttpWorker($rrWorker);
 
-        while ($worker->waitRequest()) {
+        $psr17Factory = new Psr17Factory();
+        $httpFoundationFactory = new HttpFoundationFactory();
+        $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+
+        $psrWorker = new PSR7Worker($rrWorker, $psr17Factory, $psr17Factory, $psr17Factory);
+
+        while ($psrRequest = $psrWorker->waitRequest()) {
             try {
-                $request = Request::createFromGlobals();
-                $response = $this->kernel->handle($request);
-                $worker->respond($response->getStatusCode(), $response->getContent());
+                $symfonyRequest = $httpFoundationFactory->createRequest($psrRequest);
+                $symfonyResponse = $this->kernel->handle($symfonyRequest);
+                $psrResponse = $psrHttpFactory->createResponse($symfonyResponse);
+                $psrWorker->respond($psrResponse);
             } catch (Throwable $e) {
-                $worker->getWorker()->error((string) $e);
+                $psrWorker->getWorker()->error((string) $e);
             }
         }
 
