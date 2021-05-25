@@ -13,7 +13,7 @@ composer run server
 
 ```
  % curl http://localhost:8080/
-{"message":"Welcome to your new controller!","path":"src\/Controller\/HelloWorldController.php"}
+{"message":"Hello World!","path":"src\/Controller\/HelloWorldController.php"}
 
  % wrk http://localhost:8080/
 Running 10s test @ http://localhost:8080/
