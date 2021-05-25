@@ -9,6 +9,7 @@
         "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "nyholm/psr7": "^1.4",
         "sensio/framework-extra-bundle": "^6.1",
         "spiral/roadrunner": "^2.2",
         "symfony/console": "5.2.*",
