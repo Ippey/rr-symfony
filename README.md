@@ -4,6 +4,7 @@
 
 ```
 composer install
+vendor/bin/rr get
 composer run server
 ```
 
