@@ -2,7 +2,7 @@ rpc:
   listen: tcp://127.0.0.1:6001
 
 server:
-  command: "bin/console app:psr-worker"
+  command: "bin/console app:worker"
 
 http:
   address: "0.0.0.0:8080"
