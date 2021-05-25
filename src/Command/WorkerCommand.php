@@ -7,9 +7,9 @@ use Spiral\RoadRunner\Worker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Throwable;
 
 class WorkerCommand extends Command
 {
@@ -19,8 +19,6 @@ class WorkerCommand extends Command
 
     /**
      * PsrWorkerCommand constructor.
-     * @param string|null $name
-     * @param KernelInterface $kernel
      */
     public function __construct(string $name = null, KernelInterface $kernel)
     {
@@ -35,10 +33,11 @@ class WorkerCommand extends Command
         ;
     }
 
+    /**
+     * @throws \JsonException
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-
         $rrWorker = Worker::create();
         $worker = new HttpWorker($rrWorker);
 
@@ -47,10 +46,11 @@ class WorkerCommand extends Command
                 $request = Request::createFromGlobals();
                 $response = $this->kernel->handle($request);
                 $worker->respond($response->getStatusCode(), $response->getContent());
-            } catch (\Throwable $e) {
-                $worker->getWorker()->error((string)$e);
+            } catch (Throwable $e) {
+                $worker->getWorker()->error((string) $e);
             }
         }
+
         return Command::SUCCESS;
     }
 }
