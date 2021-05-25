@@ -38,23 +38,8 @@
     "nikic/php-parser": {
         "version": "v4.10.5"
     },
-    "nyholm/psr7": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "0cd4d2d0e7f646fda75f9944f747a56e6ed13d4c"
-        },
-        "files": [
-            "config/packages/nyholm_psr7.yaml"
-        ]
-    },
     "php-cs-fixer/diff": {
         "version": "v2.0.2"
-    },
-    "php-http/message-factory": {
-        "version": "v1.0.2"
     },
     "psr/cache": {
         "version": "2.0.0"
