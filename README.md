@@ -5,6 +5,7 @@
 ```
 composer install
 vendor/bin/rr get
+chmod 755 rr
 composer run server
 ```
 
