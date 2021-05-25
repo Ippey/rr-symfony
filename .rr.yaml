@@ -1,0 +1,11 @@
+rpc:
+  listen: tcp://127.0.0.1:6001
+
+server:
+  command: "bin/console app:psr-worker"
+
+http:
+  address: "0.0.0.0:8080"
+
+logs:
+  level: error
